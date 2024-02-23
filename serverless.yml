@@ -1,0 +1,85 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: create-update-ticker
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.11
+  timeout: 120
+  iam:
+    role: ${file(iamrole.yml):lambda_role}
+
+package:
+  individually: true
+  patterns:
+    - "!node_modules/**"
+    - "!package-lock.json"
+    - "!package.json"
+    - "!.serverless/**"
+    - "!venv/**"
+    - "!main_layer/**"
+    - "!env.yml"
+    - "!iamrole.yml"
+
+layers:
+  Main:
+    path: main_layer
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+     dockerizePip: non-linux
+     layer:
+      name: PythonRequirementsLambdaLayer
+      description: Python requirements lambda layer
+      compatibleRuntimes:
+        - python3.11
+
+functions:
+  create_update_ticker:
+    handler: handler.create_update_ticker
+    environment: ${file(env.yml)}
+    layers:
+    - Ref: MainLambdaLayer
+    - Ref: PythonRequirementsLambdaLayer
+  get_all_tickers_from_s3:
+    handler: handler.get_all_tickers_from_s3
+    environment: ${file(env.yml)}
+    layers:
+    - Ref: MainLambdaLayer
+    - Ref: PythonRequirementsLambdaLayer
+  load_fundamental_data_to_s3:
+    handler: handler.load_fundamental_data_to_s3
+    environment: ${file(env.yml)}
+    layers:
+    - Ref: MainLambdaLayer
+    - Ref: PythonRequirementsLambdaLayer
+  merge_screener_data:
+    handler: handler.merge_screener_data
+    environment: ${file(env.yml)}
+    layers:
+    - Ref: MainLambdaLayer
+    - Ref: PythonRequirementsLambdaLayer
+  run_athena_query:
+    handler: handler.run_athena_query
+    environment: ${file(env.yml)}
+    layers:
+    - Ref: MainLambdaLayer
+    - Ref: PythonRequirementsLambdaLayer
