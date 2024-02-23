@@ -3,7 +3,7 @@
 This project is designed to serve a data pipeline for the US stock market. The data is fetched from Financial Modeling Prep and stored in S3.
 
 ## Archeticture
-![hg](.\md_assets\AWS_diagram.png)
+![d1](md_assets\AWS_diagram.png)
 
 #### Storage 
 - S3
@@ -22,7 +22,7 @@ AWS Lambda serves as a compute layer for processing and transforming data. Athen
 
 AWS Step Functions is used to orchestrate the needed Lambda functions.
 
-![hg](.\md_assets\stepfunctions_graph.png)
+![d2](md_assets\stepfunctions_graph.png)
 
 ##### Lambda functions
 - FetchFileName: It will fetch all file names to be updated from S3
