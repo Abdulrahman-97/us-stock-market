@@ -27,8 +27,11 @@ package.json
 # venv
 venv/
 
-#env
+# env
 env.yml
 iamrole.yml
+
+# md
+md_assets/
 
 __pycache__/

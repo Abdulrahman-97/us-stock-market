@@ -72,6 +72,7 @@ def run_athena_query(event, context):
 
     start_time = time.time()
     while status != 'SUCCEEDED':
+        status = client.get_query_execution(QueryExecutionId=queryStart['QueryExecutionId'])['QueryExecution']['Status']['State']
         if (time.time() - start_time) > 10:
             break
         
